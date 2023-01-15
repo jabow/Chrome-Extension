@@ -1,0 +1,10 @@
+Chrome extension
+
+Use local storage to save name?
+Good {Time of Day}, {Name from local storage} //King James
+Show category of image
+Fix background/visibilty of white text
+Loading effects or background colour
+
+Tonight:
+Add to github, release in sprints
