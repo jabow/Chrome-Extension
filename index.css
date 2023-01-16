@@ -148,6 +148,8 @@ p#location {
 .shortcut-text {
 	color: white;
 	margin-bottom: 0px;
+	font-family: "Roboto", "Segoe UI", Tahoma, sans-serif;
+	font-size: 13px;
 }
 
 #quote {

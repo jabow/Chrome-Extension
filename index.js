@@ -1,4 +1,4 @@
-let topicArray = [
+let pictureTopicArray = [
 	"tennis",
 	"badminton",
 	"hiking",
@@ -8,6 +8,15 @@ let topicArray = [
 	"camping",
 	"sunset",
 	"landscape",
+];
+
+let quoteTopicArray = [
+	"technology",
+	"motivational",
+	"famous-quotes",
+	"courage",
+	"inspirational",
+	"success",
 ];
 
 let user = "King James";
@@ -67,7 +76,8 @@ setInterval(updateCrypto, 1000);
 setInterval(getCurrentTime, 1000);
 
 function getBackground() {
-	let randomTopic = topicArray[Math.floor(Math.random() * topicArray.length)];
+	let randomTopic =
+		pictureTopicArray[Math.floor(Math.random() * pictureTopicArray.length)];
 	console.log(randomTopic);
 	fetch(
 		`https://apis.scrimba.com/unsplash/photos/random?orientation=landscape&query=${randomTopic}`
@@ -164,7 +174,10 @@ navigator.geolocation.getCurrentPosition((position) => {
 		.catch((err) => console.error(err));
 });
 
-fetch("https://api.quotable.io/random")
+let randomTopic =
+	quoteTopicArray[Math.floor(Math.random() * quoteTopicArray.length)];
+console.log(randomTopic);
+fetch(`https://api.quotable.io/random?tags=${randomTopic}&maxLength=70`)
 	.then((res) => {
 		if (!res.ok) {
 			throw Error("Quote data not available");
