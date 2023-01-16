@@ -6,7 +6,11 @@ let topicArray = [
 	"abandoned houses",
 	"travel",
 	"camping",
+	"sunset",
+	"landscape",
 ];
+
+let user = "King James";
 
 getBookmarks("5");
 
@@ -59,7 +63,7 @@ function getBaseURL(url) {
 getBackground();
 updateCrypto();
 // setInterval(getBackground, 60000);
-// setInterval(updateCrypto, 1000);
+setInterval(updateCrypto, 1000);
 
 function getBackground() {
 	let randomTopic = topicArray[Math.floor(Math.random() * topicArray.length)];
@@ -100,7 +104,6 @@ function updateCrypto() {
 			return res.json();
 		})
 		.then((data) => {
-			console.log(data);
 			document.getElementById("crypto-top").innerHTML = `
             <img src=${data.image.small} />
             <span>${data.name}</span>
@@ -120,13 +123,30 @@ function getCurrentTime() {
 		"en-us",
 		{ timeStyle: "short" }
 	);
+
+	let time = date.getHours();
+	if (time < 12) {
+		document.getElementById(
+			"greeting"
+		).textContent = `Good Morning, ${user}`;
+	}
+	if (time > 12) {
+		document.getElementById(
+			"greeting"
+		).textContent = `Good Afternoon, ${user}`;
+	}
+	if (time == 12) {
+		document.getElementById(
+			"greeting"
+		).textContent = `Good Evening, ${user}`;
+	}
 }
 
 setInterval(getCurrentTime, 1000);
 
 navigator.geolocation.getCurrentPosition((position) => {
 	fetch(
-		`https://apis.scrimba.com/openweathermap/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric`
+		`http://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&APPID=6a553ecc647ffbd8d0352e175d7a33c6`
 	)
 		.then((res) => {
 			if (!res.ok) {

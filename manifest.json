@@ -2,7 +2,7 @@
 	"manifest_version": 3,
 	"name": "Personal Dashboard",
 	"version": "1.0.0",
-	"permissions": ["bookmarks"],
+	"permissions": ["bookmarks", "fetch"],
 	"description": "Just for practicing async JS",
 	"action": {
 		"default_icon": "/icon.png"
