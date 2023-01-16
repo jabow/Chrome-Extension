@@ -8,15 +8,16 @@ let pictureTopicArray = [
 	"camping",
 	"sunset",
 	"landscape",
+	"seaside",
 ];
 
 let quoteTopicArray = [
 	"technology",
 	"motivational",
 	"famous-quotes",
-	"courage",
 	"inspirational",
 	"success",
+	"courage",
 ];
 
 let user = "King James";
@@ -78,7 +79,11 @@ setInterval(getCurrentTime, 1000);
 function getBackground() {
 	let randomTopic =
 		pictureTopicArray[Math.floor(Math.random() * pictureTopicArray.length)];
+	randomTopic.cap;
 	console.log(randomTopic);
+	let category = ` - Category: ${
+		randomTopic.slice(0, 1).toUpperCase() + randomTopic.slice(1)
+	}`;
 	fetch(
 		`https://apis.scrimba.com/unsplash/photos/random?orientation=landscape&query=${randomTopic}`
 	)
@@ -89,11 +94,11 @@ function getBackground() {
 			if (data.location.city !== null) {
 				document.getElementById(
 					"location"
-				).textContent = `Location: ${data.location.city}, ${data.location.country}`;
+				).textContent = `Location: ${data.location.city}, ${data.location.country} ${category}`;
 			} else {
 				document.getElementById(
 					"location"
-				).textContent = `Location: Unknown`;
+				).textContent = `Location: Unknown ${category}`;
 			}
 		})
 		.catch((err) => {
@@ -101,7 +106,7 @@ function getBackground() {
 			document.body.style.backgroundImage = `url(https://images.unsplash.com/photo-1515017804404-92b19fdfe6ac?ixid=MnwxNDI0NzB8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NzMzNzgwNjA&ixlib=rb-4.0.3)`;
 			document.getElementById(
 				"location"
-			).textContent = `Location: Unkown`;
+			).textContent = `Location: Unkown ${category}`;
 		});
 }
 
@@ -188,4 +193,9 @@ fetch(`https://api.quotable.io/random?tags=${randomTopic}&maxLength=70`)
 		// console.log(data);
 		document.getElementById("quote").innerHTML = `<p>${data.content}</p>`;
 	})
-	.catch((err) => console.error(err));
+	.catch((err) => {
+		console.error(err);
+		document.getElementById(
+			"quote"
+		).innerHTML = `<p>If you fell down yesterday, stand up today.</p>`;
+	});
