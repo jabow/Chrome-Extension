@@ -12,7 +12,10 @@ body {
 	color: white;
 	font-family: Arial, Helvetica, sans-serif;
 	/* text-shadow: 0px 0px 20px #242424; */
-	text-shadow: 0px 0px 60px #242424;
+	/* text-shadow: 0px 0px 60px #242424; */
+	text-shadow: 10px 10px 20px black;
+	background-blend-mode: multiply;
+	background-color: rgb(192, 189, 189);
 }
 
 main {

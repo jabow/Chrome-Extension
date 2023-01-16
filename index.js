@@ -64,6 +64,7 @@ getBackground();
 updateCrypto();
 // setInterval(getBackground, 60000);
 setInterval(updateCrypto, 1000);
+setInterval(getCurrentTime, 1000);
 
 function getBackground() {
 	let randomTopic = topicArray[Math.floor(Math.random() * topicArray.length)];
@@ -141,8 +142,6 @@ function getCurrentTime() {
 		).textContent = `Good Evening, ${user}`;
 	}
 }
-
-setInterval(getCurrentTime, 1000);
 
 navigator.geolocation.getCurrentPosition((position) => {
 	fetch(
