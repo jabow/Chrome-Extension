@@ -20,6 +20,8 @@ let quoteTopicArray = [
 	"courage",
 ];
 
+let cryptoArray = ["bitcoin", "ethereum"];
+
 let user = "King James";
 
 getBookmarks("5");
@@ -71,9 +73,14 @@ function getBaseURL(url) {
 }
 
 getBackground();
+cryptoArray.forEach((cryptoName) => {
+	document.getElementById(
+		"crypto"
+	).innerHTML += `<div id="${cryptoName}"></div>`;
+});
 updateCrypto();
 // setInterval(getBackground, 60000);
-setInterval(updateCrypto, 1000);
+// setInterval(updateCrypto, 1000);
 setInterval(getCurrentTime, 1000);
 
 function getBackground() {
@@ -93,11 +100,11 @@ function getBackground() {
 			document.body.style.backgroundImage = `url(${data.urls.raw})`;
 			if (data.location.city !== null) {
 				document.getElementById(
-					"location"
+					"background-desc"
 				).textContent = `Location: ${data.location.city}, ${data.location.country} ${category}`;
 			} else {
 				document.getElementById(
-					"location"
+					"background-desc"
 				).textContent = `Location: Unknown ${category}`;
 			}
 		})
@@ -105,32 +112,45 @@ function getBackground() {
 			// Use a default background image/author
 			document.body.style.backgroundImage = `url(https://images.unsplash.com/photo-1515017804404-92b19fdfe6ac?ixid=MnwxNDI0NzB8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NzMzNzgwNjA&ixlib=rb-4.0.3)`;
 			document.getElementById(
-				"location"
+				"background-desc"
 			).textContent = `Location: Unkown ${category}`;
 		});
 }
 
 function updateCrypto() {
-	console.log("updated");
-	fetch("https://api.coingecko.com/api/v3/coins/bitcoin")
-		.then((res) => {
-			if (!res.ok) {
-				throw Error("Something went wrong");
-			}
-			return res.json();
-		})
-		.then((data) => {
-			document.getElementById("crypto-top").innerHTML = `
-            <img src=${data.image.small} />
-            <span>${data.name}</span>
-        `;
-			document.getElementById("crypto-bot").innerHTML = `
-            <p>🎯: £${data.market_data.current_price.gbp}</p>
-            <p>👆: £${data.market_data.high_24h.gbp}</p>
-            <p>👇: £${data.market_data.low_24h.gbp}</p>
-        `;
-		})
-		.catch((err) => console.error(err));
+	cryptoArray.forEach((cryptoName) => {
+		fetch(`https://api.coingecko.com/api/v3/coins/${cryptoName}`)
+			.then((res) => {
+				if (!res.ok) {
+					throw Error("Something went wrong");
+				}
+				return res.json();
+			})
+			.then((data) => {
+				let percentageChange24h =
+					Math.round(
+						data.market_data.price_change_percentage_24h * 100
+					) / 100;
+
+				document.getElementById(`${cryptoName}`).innerHTML = `
+				<div class="cryptoData">
+					<div class="crypto-img-tile">
+						<img src=${data.image.small} />
+					</div>
+					<p>${data.name}</p>
+					<p>£${data.market_data.current_price.gbp}</p>
+					<p class="change-percentage ${
+						percentageChange24h >= 0 ? "bg-green" : "bg-red"
+					}">${
+					percentageChange24h >= 0
+						? `<i class="fa fa-arrow-up"></i>`
+						: `<i class="fa fa-arrow-down"></i>`
+				}${percentageChange24h}%</p>
+				</div>
+			`;
+			})
+			.catch((err) => console.error(err));
+	});
 }
 
 function getCurrentTime() {
@@ -169,6 +189,7 @@ navigator.geolocation.getCurrentPosition((position) => {
 			return res.json();
 		})
 		.then((data) => {
+			console.log(data);
 			const iconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
 			document.getElementById("weather").innerHTML = `
                 <img src=${iconUrl} />

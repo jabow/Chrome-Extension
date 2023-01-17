@@ -43,22 +43,55 @@ h2#greeting {
 }
 
 div#crypto {
+	display: flex;
+	flex-direction: column;
 	font-size: 1.3rem;
 }
 
-div#crypto-bot > p {
-	margin: 0;
-	padding: 5px;
+div.cryptoData > p {
+	margin-left: 10px;
+	margin-bottom: 0px;
+	margin-top: 0px;
 }
 
-div#crypto-top {
+div.crypto-img-tile > img {
+	width: 30px;
+	height: 30px;
+}
+
+.cryptoData {
 	display: flex;
 	align-items: center;
-	margin-bottom: 5px;
+	padding-top: 5px;
+	padding-bottom: 5px;
 }
 
-div#crypto-top > span {
-	margin-left: 10px;
+.crypto-img-tile {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 40px;
+	background-color: rgb(185, 180, 180, 0.8);
+	border-radius: 30%;
+}
+
+.change-percentage {
+	font-size: 0.9rem;
+	border-radius: 20%;
+	font-weight: bold;
+}
+
+.bg-green {
+	background-color: rgb(0, 255, 76);
+}
+
+.bg-red {
+	background-color: rgba(255, 0, 0, 0.507);
+}
+
+.fa {
+	padding-right: 3px;
 }
 
 div#weather {
@@ -88,7 +121,7 @@ p.weather-temp {
 	margin-left: -10px;
 }
 
-p#location {
+p#background-desc {
 	font-size: 1.3rem;
 	margin: 0;
 }

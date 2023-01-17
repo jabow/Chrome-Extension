@@ -1,10 +1,9 @@
 Chrome extension
 
 Use local storage to save name?
-Good {Time of Day}, {Name from local storage} //King James
-Show category of image
-Fix background/visibilty of white text
-Loading effects or background colour
+publish as chrome extension store £5
+
 
 Tonight:
-Add to github, release in sprints
+display multiple crypto currencies and only show 24hr percentage change
+crypto text - make it smaller and more visable, make background green and text white
