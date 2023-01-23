@@ -1,3 +1,9 @@
+// Want more from your new tabs? This extension shows all your selected bookmarks in an easy to read format so you can get to where you need as quickly as possible.
+
+// Along with a sleek design a random background will be shown based on interests of your choosing, you can also see the latest crypto prices and weather in your location.
+
+// Need some inspiration? feel free to read a random quote based on a topic of your choice!
+
 let pictureTopicArray = [
 	"tennis",
 	"badminton",
@@ -20,36 +26,53 @@ let quoteTopicArray = [
 	"courage",
 ];
 
-let cryptoArray = ["bitcoin", "ethereum"];
+let cryptoArray = ["bitcoin", "ethereum", "dogecoin"];
 
-let user = "King James";
+let user = "King Jamess";
 
-getBookmarks("5");
+let bookmarksFolder = "Common";
 
-function getBookmarks(id) {
-	chrome.bookmarks.getChildren(id, function (children) {
-		children.forEach(function (bookmark) {
-			let shortcut = document.createElement("a");
-			let shortcutButton = document.createElement("a");
-			let shortcutLogo = document.createElement("div");
-			let shortcutName = document.createElement("p");
+getBookmarks(bookmarksFolder);
+updateCrypto();
+// setInterval(getBackground, 60000);
+setInterval(updateCrypto, 1000);
+setInterval(getCurrentTime, 1000);
+getQuote();
+getBackground();
+getLocation();
 
-			shortcut.classList.add("shortcut");
-			shortcutLogo.classList.add("shortcut-logo");
-			shortcutButton.classList.add("shortcut-button");
-			shortcutName.classList.add("shortcut-text");
+cryptoArray.forEach((cryptoName) => {
+	document.getElementById(
+		"crypto"
+	).innerHTML += `<div id="${cryptoName}"></div>`;
+});
 
-			shortcutLogo.style.backgroundImage = `url(${getWebsiteFavicon(
-				bookmark.url
-			)})`;
+function getBookmarks(folderName) {
+	chrome.bookmarks.search(folderName, function (folder) {
+		chrome.bookmarks.getChildren(folder[0].id, function (children) {
+			children.forEach(function (bookmark) {
+				let shortcut = document.createElement("a");
+				let shortcutButton = document.createElement("a");
+				let shortcutLogo = document.createElement("div");
+				let shortcutName = document.createElement("p");
 
-			shortcutName.innerText = get10CharacterString(bookmark.title);
-			shortcut.href = bookmark.url;
+				shortcut.classList.add("shortcut");
+				shortcutLogo.classList.add("shortcut-logo");
+				shortcutButton.classList.add("shortcut-button");
+				shortcutName.classList.add("shortcut-text");
 
-			shortcut.appendChild(shortcutButton);
-			shortcutButton.appendChild(shortcutLogo);
-			shortcut.appendChild(shortcutName);
-			document.getElementById("bookmarks").appendChild(shortcut);
+				shortcutLogo.style.backgroundImage = `url(${getWebsiteFavicon(
+					bookmark.url
+				)})`;
+
+				shortcutName.innerText = get10CharacterString(bookmark.title);
+				shortcut.href = bookmark.url;
+
+				shortcut.appendChild(shortcutButton);
+				shortcutButton.appendChild(shortcutLogo);
+				shortcut.appendChild(shortcutName);
+				document.getElementById("bookmarks").appendChild(shortcut);
+			});
 		});
 	});
 }
@@ -71,17 +94,6 @@ function getBaseURL(url) {
 	let baseURL = new URL(url);
 	return baseURL.origin;
 }
-
-getBackground();
-cryptoArray.forEach((cryptoName) => {
-	document.getElementById(
-		"crypto"
-	).innerHTML += `<div id="${cryptoName}"></div>`;
-});
-updateCrypto();
-// setInterval(getBackground, 60000);
-// setInterval(updateCrypto, 1000);
-setInterval(getCurrentTime, 1000);
 
 function getBackground() {
 	let randomTopic =
@@ -145,7 +157,7 @@ function updateCrypto() {
 					percentageChange24h >= 0
 						? `<i class="fa fa-arrow-up"></i>`
 						: `<i class="fa fa-arrow-down"></i>`
-				}${percentageChange24h}%</p>
+				}${Math.abs(percentageChange24h)}%</p>
 				</div>
 			`;
 			})
@@ -178,45 +190,51 @@ function getCurrentTime() {
 	}
 }
 
-navigator.geolocation.getCurrentPosition((position) => {
-	fetch(
-		`http://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&APPID=6a553ecc647ffbd8d0352e175d7a33c6`
-	)
-		.then((res) => {
-			if (!res.ok) {
-				throw Error("Weather data not available");
-			}
-			return res.json();
-		})
-		.then((data) => {
-			console.log(data);
-			const iconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
-			document.getElementById("weather").innerHTML = `
+function getLocation() {
+	navigator.geolocation.getCurrentPosition((position) => {
+		fetch(
+			`http://api.openweathermap.org/data/2.5/weather?lat=${position.coords.latitude}&lon=${position.coords.longitude}&units=metric&APPID=6a553ecc647ffbd8d0352e175d7a33c6`
+		)
+			.then((res) => {
+				if (!res.ok) {
+					throw Error("Weather data not available");
+				}
+				return res.json();
+			})
+			.then((data) => {
+				console.log(data);
+				const iconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
+				document.getElementById("weather").innerHTML = `
                 <img src=${iconUrl} />
                 <p class="weather-temp">${Math.round(data.main.temp)}º</p>
                 <p class="weather-city">${data.name}</p>
             `;
-		})
-		.catch((err) => console.error(err));
-});
-
-let randomTopic =
-	quoteTopicArray[Math.floor(Math.random() * quoteTopicArray.length)];
-console.log(randomTopic);
-fetch(`https://api.quotable.io/random?tags=${randomTopic}&maxLength=70`)
-	.then((res) => {
-		if (!res.ok) {
-			throw Error("Quote data not available");
-		}
-		return res.json();
-	})
-	.then((data) => {
-		// console.log(data);
-		document.getElementById("quote").innerHTML = `<p>${data.content}</p>`;
-	})
-	.catch((err) => {
-		console.error(err);
-		document.getElementById(
-			"quote"
-		).innerHTML = `<p>If you fell down yesterday, stand up today.</p>`;
+			})
+			.catch((err) => console.error(err));
 	});
+}
+
+function getQuote() {
+	let randomTopic =
+		quoteTopicArray[Math.floor(Math.random() * quoteTopicArray.length)];
+	console.log(randomTopic);
+	fetch(`https://api.quotable.io/random?tags=${randomTopic}&maxLength=70`)
+		.then((res) => {
+			if (!res.ok) {
+				throw Error("Quote data not available");
+			}
+			return res.json();
+		})
+		.then((data) => {
+			// console.log(data);
+			document.getElementById(
+				"quote"
+			).innerHTML = `<p>${data.content}</p>`;
+		})
+		.catch((err) => {
+			console.error(err);
+			document.getElementById(
+				"quote"
+			).innerHTML = `<p>If you fell down yesterday, stand up today.</p>`;
+		});
+}
