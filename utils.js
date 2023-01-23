@@ -78,7 +78,6 @@ function getBackground() {
 	let randomTopic =
 		pictureTopicArray[Math.floor(Math.random() * pictureTopicArray.length)];
 	randomTopic.cap;
-	console.log(randomTopic);
 	let category = ` - Category: ${
 		randomTopic.slice(0, 1).toUpperCase() + randomTopic.slice(1)
 	}`;
@@ -87,7 +86,6 @@ function getBackground() {
 	)
 		.then((res) => res.json())
 		.then((data) => {
-			console.log(data);
 			document.body.style.backgroundImage = `url(${data.urls.raw})`;
 			if (data.location.city !== null) {
 				document.getElementById(
@@ -181,7 +179,6 @@ function getLocation() {
 				return res.json();
 			})
 			.then((data) => {
-				console.log(data);
 				const iconUrl = `http://openweathermap.org/img/wn/${data.weather[0].icon}@2x.png`;
 				document.getElementById("weather").innerHTML = `
                 <img src=${iconUrl} />
@@ -196,7 +193,6 @@ function getLocation() {
 function getQuote() {
 	let randomTopic =
 		quoteTopicArray[Math.floor(Math.random() * quoteTopicArray.length)];
-	console.log(randomTopic);
 	fetch(`https://api.quotable.io/random?tags=${randomTopic}&maxLength=70`)
 		.then((res) => {
 			if (!res.ok) {
@@ -220,7 +216,6 @@ function getQuote() {
 
 export {
 	getBookmarks,
-	getWebsiteLogo,
 	getBackground,
 	updateCrypto,
 	getCurrentTime,

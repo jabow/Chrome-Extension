@@ -1,6 +1,5 @@
 import {
 	getBookmarks,
-	getWebsiteLogo,
 	getBackground,
 	updateCrypto,
 	getCurrentTime,
