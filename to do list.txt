@@ -1,7 +1,6 @@
 Chrome extension
 
 Use local storage to save name?
-publish as chrome extension store £5
 set limits on arrays
 refactor code
 change manifest.json to include better description, title and favicon image
