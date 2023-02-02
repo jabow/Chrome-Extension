@@ -22,7 +22,7 @@ let quoteTopicArray = [
 
 let cryptoArray = ["bitcoin", "ethereum", "dogecoin"];
 
-let user = "King James";
+let user = "James";
 
 let bookmarksFolder = "Common";
 
